@@ -291,16 +291,30 @@ using namespace POLE;
 
 #ifdef POLE_USE_UTF16_FILENAMES
 
-std::string POLE::UTF16toUTF8(const std::wstring &utf16) {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> converter;
-    return converter.to_bytes(utf16);
-}
+  #ifdef __MINGW32__
+  #include <boost/locale/encoding_utf.hpp>
 
-std::wstring POLE::UTF8toUTF16(const std::string &utf8) {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> converter;
-    return converter.from_bytes(utf8);
-}
+  using boost::locale::conv::utf_to_utf;
 
+  std::string POLE::UTF16toUTF8(const std::wstring &utf16) {
+    return utf_to_utf<char>(utf16.c_str(), utf16.c_str() + utf16.size());
+  }
+
+  std::wstring POLE::UTF8toUTF16(const std::string &utf8) {
+    return utf_to_utf<wchar_t>(utf8.c_str(), utf8.c_str() + utf8.size());
+  }
+
+  #else
+  std::string POLE::UTF16toUTF8(const std::wstring &utf16) {
+      std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> converter;
+      return converter.to_bytes(utf16);
+  }
+
+  std::wstring POLE::UTF8toUTF16(const std::string &utf8) {
+      std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> converter;
+      return converter.from_bytes(utf8);
+  }
+  #endif
 #endif //POLE_USE_UTF16_FILENAMES
 
 static void fileCheck(std::fstream &file)
