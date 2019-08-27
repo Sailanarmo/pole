@@ -11,6 +11,8 @@ if(MINGW)
   add_library(Poledump STATIC pole.cpp poledump.cpp)
   #add_dependencies(Poledump Boost_external_download)
   target_link_libraries(Poledump ${Boost_LIBRARIES})
+
+  message(STATUS ${Boost_INCLUDE_DIRS})
 else()
   add_library(Poledump STATIC pole.cpp poledump.cpp)
 endif()
