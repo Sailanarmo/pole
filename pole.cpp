@@ -178,7 +178,11 @@ class StorageIO
   public:
     Storage* storage;         // owner
     std::string filename;     // filename
+#ifdef __MINGW32__
+    std::wfstream file;
+#else
     std::fstream file;        // associated with above name
+#endif
     int64 result;               // result of operation
     bool opened;              // true if file is opened
     uint64 filesize;   // size of the file
@@ -317,7 +321,11 @@ using namespace POLE;
   #endif
 #endif //POLE_USE_UTF16_FILENAMES
 
+#ifdef __MINGW32__
+static void fileCheck(std::wfstream &file)
+#else
 static void fileCheck(std::fstream &file)
+#endif
 {
     bool bGood, bFail, bEof, bBad;
     bool bNOTOK;
