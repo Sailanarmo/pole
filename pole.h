@@ -66,6 +66,7 @@ namespace POLE
 {
 
 #if defined WIN32 || defined WIN64 || defined _WIN32 || defined _WIN64 || defined _MSVC
+#define POLE_CLASS __declspec(dllexport) 
 #define POLE_USE_UTF16_FILENAMES
 #define POLE_WIN
 typedef __int32 int32;
@@ -86,11 +87,11 @@ std::string UTF16toUTF8(const std::wstring &utf16);
 std::wstring UTF8toUTF16(const std::string &utf8);
 #endif //POLE_USE_UTF16_FILENAMES
 
-class StorageIO;
-class Stream;
-class StreamIO;
+class POLE_CLASS StorageIO;
+class POLE_CLASS Stream;
+class POLE_CLASS StreamIO;
 
-class Storage
+class POLE_CLASS Storage
 {
   friend class Stream;
   friend class StreamOut;
@@ -172,7 +173,7 @@ private:
 
 };
 
-class Stream
+class POLE_CLASS Stream
 {
   friend class Storage;
   friend class StorageIO;
